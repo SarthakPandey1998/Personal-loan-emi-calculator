@@ -1,0 +1,200 @@
+<!-- Bootstrap Personal Loan EMI Calculator -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI Calculator</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <style type="text/css">
+        body {
+            font-family: 'Open Sans Regular', sans-serif;
+            background: #F3F3F3;
+            font-size: 14px;
+            color: #444 !important;
+        }
+
+        .title {
+            color: #00337f;
+            font-size: 33px;
+            text-shadow: 5px 8px 5px blue;
+        }
+
+        .calculator-box {
+            width: auto;
+        }
+
+        .calculator-box:hover {
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .first-section {
+            padding-right: 5px;
+        }
+
+        .amount {
+            width: 79px;
+            padding: 6px 0 6px 15px;
+        }
+
+        .rupee {
+            top: 8px;
+            right: 64px;
+        }
+
+        input[type=text],
+        input[type=number] {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+            font-size: 14px;
+            height: 34px;
+        }
+
+        .range {
+            margin: 10px 0 0;
+        }
+
+        .rangeinput {
+            color: #1e436f;
+        }
+
+        .rupee2 {
+            margin-left: 24px;
+        }
+
+        .second-section {
+            padding-left: 24px;
+        }
+
+        .txtinput {
+            width: 45px;
+        }
+
+        .time {
+            margin-left: 48px;
+        }
+
+        .third-section {
+            padding-left: 24px;
+        }
+
+        .rate {
+            width: 79px;
+        }
+
+        .percent {
+            margin-left: 56px;
+        }
+
+        @media only screen and (max-width:576px) {
+
+
+            .amount2,
+            .year,
+            .rate2 {
+                width: 50%;
+            }
+
+            .rate2 {
+                margin-top: 16px;
+            }
+        }
+
+        @media only screen and (max-width:380px) {
+
+
+            .amount2,
+            .year,
+            .rate2 {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .year {
+                margin-top: 24px;
+            }
+
+            .rate2 {
+                margin-top: 24px;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        function handleAmount() {
+            document.getElementById("txtAmount").value = document.getElementById("rangeAmount").value;
+        };
+        function handleYear() {
+            document.getElementById("txtYear").value = document.getElementById("rangeYear").value;
+        };
+        function handleRate() {
+            document.getElementById("numberRate").value = document.getElementById("rangeRate").value;
+        };
+
+        function calculateEmi() {
+            var P = parseInt(document.getElementById("txtAmount").value);
+            var R = parseFloat(document.getElementById("numberRate").value / 12 / 100);
+            var N = parseInt(document.getElementById("txtYear").value * 12);
+
+            var EMI = P * R * (Math.pow(1 + R, N)) / ((Math.pow(1 + R, N)) - 1);
+            document.getElementById('emiVal').innerHTML = "Your Monthly Installment Amount is <b>" + EMI.toLocaleString("en-in", { style: "currency", currency: "INR" }) + "</b> for Next" + "&nbsp;" + N + "&nbsp;" + "months";
+        }
+    </script>
+</head>
+
+<body class="container-fluid">
+    <div class="text-center title mt-4">Personal Loan EMI Calculator</div>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="border-2 bg-white px-4 pt-4 pb-3 mt-4 calculator-box">
+            <div class="row">
+                <div class="col-4 amount2">
+                    <label for="amount" class="mt-2 me-2">Amount you need</label>
+                    <div class="d-inline-block position-relative">
+                        <input type="text" name="amount" class="d-inline-block form-control amount" value="500000"
+                            id="txtAmount">
+                        <span class="position-absolute rupee">&#8377;</span>
+                    </div>
+                    <div class="d-block range">
+                        <input type="range" min="50000" max="4000000" value="500000" class="rangeinput" id="rangeAmount"
+                            onchange="handleAmount()">
+                        <div> <span>50,000</span><span class="rupee2">40,00,000</span></div>
+                    </div>
+                </div>
+                <div class="col-4 year">
+                    for<input type="text" class="d-inline-block txtinput ms-1 me-2 px-3 py-1" value="5" id="txtYear">
+                    years
+                    <div class="d-block range">
+                        <input type="range" min="1" max="5" value="5" id="rangeYear" onchange="handleYear()">
+                        <div> <span>1 Year</span><span class="time">5 Year</span></div>
+                    </div>
+                </div>
+                <div class="col-4 rate2">
+                    Interest rate <input type="number" class="d-inline-block rate ms-1 me-2 ps-3 py-1 " value="10.5"
+                        id="numberRate"> %
+                    <div class="d-block range">
+                        <input type="range" min="10.5" max="21" value="10.5" id="rangeRate" step="0.1"
+                            onchange="handleRate()">
+                        <div> <span>10.5 %</span><span class="percent">21%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-end">
+                    <button class="btn btn-primary text-white mt-4 mb-2 rounded-1" id="cal"
+                        onclick="calculateEmi()">CALCULATE</button>
+                </div>
+            </div>
+            <div class="row">
+                <div id="emiVal" class="text-center p-3 my-2"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</body>
+
+</html>
